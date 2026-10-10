@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: restaurant-api
+  datasource:
+    url: jdbc:postgresql://localhost:5442/meteor
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  banner:
+    location: classpath:banner.txt
