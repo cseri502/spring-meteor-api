@@ -4,7 +4,7 @@ import com.meteor.restaurantapi.category.dto.CategoryCreateRequest;
 import com.meteor.restaurantapi.category.dto.CategoryResponse;
 import com.meteor.restaurantapi.category.entity.Category;
 import com.meteor.restaurantapi.category.repository.CategoryRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.meteor.restaurantapi.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse findById(Long id) {
         var category = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Category with id " + id + " not found"
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("Category", id));
 
         return toResponse(category);
     }

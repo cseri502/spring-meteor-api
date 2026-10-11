@@ -1,6 +1,6 @@
 package com.meteor.restaurantapi.restaurant.service;
 
-import com.meteor.restaurantapi.common.exception.RestaurantNotFoundException;
+import com.meteor.restaurantapi.common.exception.ResourceNotFoundException;
 import com.meteor.restaurantapi.restaurant.dto.RestaurantCreateRequest;
 import com.meteor.restaurantapi.restaurant.dto.RestaurantResponse;
 import com.meteor.restaurantapi.restaurant.entity.Restaurant;
@@ -45,7 +45,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public RestaurantResponse findById(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant", id));
 
         return toResponse(restaurant);
     }

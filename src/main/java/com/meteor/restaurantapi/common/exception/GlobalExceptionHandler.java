@@ -12,16 +12,14 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RestaurantNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleRestaurantNotFound(
-            RestaurantNotFoundException exception
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleResourceNotFound(
+            ResourceNotFoundException exception
     ) {
-        ApiErrorResponse response = new ApiErrorResponse(
+        ApiErrorResponse response = ApiErrorResponse.of(
                 HttpStatus.NOT_FOUND.value(),
-                "Restaurant not found",
-                exception.getMessage(),
-                LocalDateTime.now(),
-                List.of()
+                "Resource not found",
+                exception.getMessage()
         );
 
         return ResponseEntity
@@ -39,16 +37,8 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .toList();
 
-        ApiErrorResponse response = new ApiErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Validation failed",
-                "One or more fields are invalid",
-                LocalDateTime.now(),
-                errors
-        );
-
         return ResponseEntity
                 .badRequest()
-                .body(response);
+                .body(ApiErrorResponse.validation(errors));
     }
 }

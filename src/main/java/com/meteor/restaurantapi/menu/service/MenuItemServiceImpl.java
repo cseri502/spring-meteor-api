@@ -1,7 +1,7 @@
 package com.meteor.restaurantapi.menu.service;
 
 import com.meteor.restaurantapi.category.repository.CategoryRepository;
-import com.meteor.restaurantapi.common.exception.RestaurantNotFoundException;
+import com.meteor.restaurantapi.common.exception.ResourceNotFoundException;
 import com.meteor.restaurantapi.menu.dto.MenuItemCreateRequest;
 import com.meteor.restaurantapi.menu.dto.MenuItemResponse;
 import com.meteor.restaurantapi.menu.entity.MenuItem;
@@ -26,7 +26,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Transactional
     public MenuItemResponse create(Long restaurantId, MenuItemCreateRequest request) {
         var restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant", restaurantId));
 
         var category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() ->
@@ -54,7 +54,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     public List<MenuItemResponse> findAllByRestaurantId(Long restaurantId) {
         if (!restaurantRepository.existsById(restaurantId)) {
-            throw new RestaurantNotFoundException(restaurantId);
+            throw new ResourceNotFoundException("Restaurant", restaurantId);
         }
 
         return menuItemRepository.findAllByRestaurantId(restaurantId)
@@ -66,10 +66,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Override
     public MenuItemResponse findById(Long id) {
         var menuItem = menuItemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Menu item with id "
-                        + id + " not found"
-                ));
+                .orElseThrow(() -> new ResourceNotFoundException("MenuItem", id));
 
         return toResponse(menuItem);
     }
@@ -78,9 +75,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Transactional
     public void delete(Long id) {
         if (!menuItemRepository.existsById(id)) {
-            throw new IllegalArgumentException(
-                    "Menu item with " + id + " not found"
-            );
+            throw new ResourceNotFoundException("MenuItem", id);
         }
 
         menuItemRepository.deleteById(id);
