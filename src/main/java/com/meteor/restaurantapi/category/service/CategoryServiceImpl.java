@@ -4,6 +4,7 @@ import com.meteor.restaurantapi.category.dto.CategoryCreateRequest;
 import com.meteor.restaurantapi.category.dto.CategoryResponse;
 import com.meteor.restaurantapi.category.entity.Category;
 import com.meteor.restaurantapi.category.repository.CategoryRepository;
+import com.meteor.restaurantapi.common.exception.ResourceAlreadyExistsException;
 import com.meteor.restaurantapi.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponse create(CategoryCreateRequest request) {
+        if (categoryRepository.existsByNameIgnoreCase(request.name())) {
+            throw new ResourceAlreadyExistsException("Category", "name", request.name());
+        }
+
         Category category = Category.builder()
                 .name(request.name())
                 .build();

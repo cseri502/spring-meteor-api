@@ -41,4 +41,19 @@ public class GlobalExceptionHandler {
                 .badRequest()
                 .body(ApiErrorResponse.validation(errors));
     }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleResourceAlreadyExists(
+            ResourceAlreadyExistsException exception
+    ) {
+        var response = ApiErrorResponse.of(
+                HttpStatus.CONTINUE.value(),
+                "Resource already exists",
+                exception.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(response);
+    }
 }
