@@ -43,7 +43,6 @@ public class MenuItemServiceImpl implements MenuItemService {
                 .description(request.description())
                 .price(request.price())
                 .available(request.available())
-                .createdAt(LocalDateTime.now())
                 .build();
 
         var saved = menuItemRepository.save(menuItem);

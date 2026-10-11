@@ -26,7 +26,6 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .description(request.description())
                 .phone(request.phone())
                 .email(request.email())
-                .createdAt(LocalDateTime.now())
                 .build();
 
         Restaurant saved = restaurantRepository.save(restaurant);
