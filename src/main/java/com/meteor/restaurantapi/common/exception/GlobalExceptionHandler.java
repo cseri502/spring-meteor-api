@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
             ResourceAlreadyExistsException exception
     ) {
         var response = ApiErrorResponse.of(
-                HttpStatus.CONTINUE.value(),
+                HttpStatus.CONFLICT.value(),
                 "Resource already exists",
                 exception.getMessage()
         );
